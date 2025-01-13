@@ -1,86 +1,153 @@
+import { useState } from "react"
+import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 export const Formulario = () => {
+
+    const navigate = useNavigate()
+
+    // PASO 1
+    const [form, setForm] = useState({
+        nombre: "",
+        propietario: "",
+        email: "",
+        celular: "",
+        convencional: "",
+        sintomas: "",
+    })
+
+    // PASO 2
+
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        })
+    }
+
+
+    // PASO 3
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const token = localStorage.getItem('token')
+            const url = `${import.meta.env.VITE_BACKEND_URL}/paciente/registro`
+            const options = {
+                headers:{
+                    'Content-Type':'application/json',
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            await axios.post(url,form,options)
+            navigate('/dashboard/listar')
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
+
+
+
     return (
-        <form>
+        <form onSubmit={handleSubmit}>
 
             <div>
                 <label
-                    htmlFor='nombre'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre: </label>
+                    htmlFor='nombre:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Nombre de la mascota: </label>
                 <input
                     id='nombre'
                     type="text"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre'
+                    placeholder='nombre de la mascota'
                     name='nombre'
+                    onChange={handleChange}
                 />
             </div>
             <div>
                 <label
-                    htmlFor='nombre'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre: </label>
+                    htmlFor='propietario:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Nombre del propietario: </label>
                 <input
-                    id='nombre'
+                    id='propietario'
                     type="text"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre'
-                    name='nombre'
+                    placeholder='nombre del propietario'
+                    name='propietario'
+                    onChange={handleChange}
                 />
             </div>
             <div>
                 <label
-                    htmlFor='nombre'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre: </label>
+                    htmlFor='email:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Email: </label>
                 <input
-                    id='nombre'
-                    type="text"
+                    id='email'
+                    type="email"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre'
-                    name='nombre'
+                    placeholder='email del propietario'
+                    name='email'
+                    onChange={handleChange}
                 />
             </div>
             <div>
                 <label
-                    htmlFor='nombre'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre: </label>
+                    htmlFor='celular:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Celular: </label>
                 <input
-                    id='nombre'
-                    type="text"
+                    id='celular'
+                    type="number"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre'
-                    name='nombre'
+                    placeholder='celular del propietario'
+                    name='celular'
+                    onChange={handleChange}
                 />
             </div>
             <div>
                 <label
-                    htmlFor='nombre'
-                    className='text-gray-700 uppercase font-bold text-sm'>Nombre: </label>
+                    htmlFor='convencional:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Convencional: </label>
                 <input
-                    id='nombre'
-                    type="text"
+                    id='convencional'
+                    type="number"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    placeholder='nombre'
-                    name='nombre'
+                    placeholder='convencional del propietario'
+                    name='convencional'
+                    onChange={handleChange}
                 />
             </div>
-
             <div>
                 <label
-                    htmlFor='detalles'
-                    className='text-gray-700 uppercase font-bold text-sm'>Detalles: </label>
+                    htmlFor='Salida:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Fecha de salida: </label>
+                <input
+                    id='salida'
+                    type="date"
+                    className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
+                    placeholder='salida'
+                    name='salida'
+                    onChange={handleChange}
+                />
+            </div>
+            <div>
+                <label
+                    htmlFor='sintomas:'
+                    className='text-gray-700 uppercase font-bold text-sm'>Síntomas: </label>
                 <textarea
-                    id='detalles'
+                    id='sintomas'
                     type="text"
                     className='border-2 w-full p-2 mt-2 placeholder-gray-400 rounded-md mb-5'
-                    name='detalles'
+                    placeholder='Ingrese los síntomas de la mascota'
+                    name='sintomas'
+                    onChange={handleChange}
                 />
             </div>
 
             <input
                 type="submit"
                 className='bg-gray-600 w-full p-3 
-        text-slate-300 uppercase font-bold rounded-lg 
-        hover:bg-gray-900 cursor-pointer transition-all'
+                    text-slate-300 uppercase font-bold rounded-lg 
+                    hover:bg-gray-900 cursor-pointer transition-all'
                 value='Registrar' />
 
         </form>
