@@ -28,3 +28,9 @@ export const CardPerfil = () => {
         </div>
     )
 }
+
+// 0982265850
+// 0988851152
+// laovejeriaec@ -- 
+// 0967296686 -- mesero
+// 0986860910 -- mascotas fines de semana
