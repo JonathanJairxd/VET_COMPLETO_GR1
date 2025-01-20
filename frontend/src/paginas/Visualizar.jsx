@@ -1,14 +1,18 @@
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
+import AuthContext from '../context/AuthProvider';
 import axios from 'axios';
 import Mensaje from '../componets/Alertas/Mensaje';
 import ModalTratamiento from '../componets/Modals/ModalTratamiento';
 import tratamientosContext from '../context/TratamientosProvider';
+import TablaTratamientos from '../componets/TablaTratamientos';
 
 const Visualizar = () => {
 
+    const { auth } = useContext(AuthContext)
+
     //Para los tratamientos
-    const {modal, handleModal} = useContext(tratamientosContext)
+    const { modal, handleModal, tratamientos, setTratamientos } = useContext(tratamientosContext)
 
     const { id } = useParams()
     const [paciente, setPaciente] = useState({})
@@ -33,6 +37,7 @@ const Visualizar = () => {
                 }
                 const respuesta = await axios.get(url, options)
                 setPaciente(respuesta.data.paciente)
+                setTratamientos(respuesta.data.tratamientos)
             } catch (error) {
                 setMensaje({ respuesta: error.response.data.msg, tipo: false })
             }
@@ -90,11 +95,22 @@ const Visualizar = () => {
                                 <hr className='my-4' />
                                 <div className='flex justify-between items-center'>
                                     <p>Este submódulo te permite visualizar los tratamientos del paciente</p>
-                                    <button className="px-5 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700"
-                                        onClick={handleModal}
-                                    >Registrar</button>
+                                    {
+                                        auth.rol === "veterinario" &&
+                                        (
+                                            <button className="px-5 py-2 bg-green-800 text-white rounded-lg hover:bg-green-700" onClick={handleModal}>Registrar</button>
+                                        )
+                                    }
                                 </div>
                                 {modal && (<ModalTratamiento idPaciente={paciente._id} />)}
+
+                                {
+                                    tratamientos.length == 0
+                                        ?
+                                        <p>"NO EXISTEN REGISTROS"</p>
+                                        :
+                                        <TablaTratamientos tratamientos={tratamientos} />
+                                }
                             </>
                         )
                         :

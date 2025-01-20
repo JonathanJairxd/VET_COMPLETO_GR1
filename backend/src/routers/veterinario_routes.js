@@ -25,7 +25,7 @@ import { validacionVeterinario } from '../middlewares/validacionVeterinario.js';
 
 
 // Rutas publicas
-router.post("/login", login);
+router.post("/login",login);
 
 
 
