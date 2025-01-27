@@ -13,7 +13,13 @@ const AuthProvider = ({ children }) => {
 
     const perfil = async (token) => {
         try {
-            const url = `${import.meta.env.VITE_BACKEND_URL}/perfil`
+            // Obtener el rol del usuario desde el localStorage
+            const rol = localStorage.getItem('rol');
+
+            // Determinar la URL en función del rol
+            const url = rol === "veterinario"
+                ? `${import.meta.env.VITE_BACKEND_URL}/perfil`
+                : `${import.meta.env.VITE_BACKEND_URL}/paciente/perfil`;
 
             const options = {
                 headers: {

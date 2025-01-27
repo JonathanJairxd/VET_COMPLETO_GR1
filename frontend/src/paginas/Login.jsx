@@ -36,8 +36,12 @@ const Login = () => {
             const respuesta = await axios.post(url, form)
 
             localStorage.setItem('token',respuesta.data.token)
+
+            const rol = form.password.includes("vet") ? "paciente" : "veterinario";
+            localStorage.setItem('rol', rol)
+
             setAuth(respuesta.data)
-            toast.success("Login exitoso")
+            toast.success(respuesta.data.msg)
             navigate('/dashboard')
             console.log(respuesta)
         } catch (error) {
